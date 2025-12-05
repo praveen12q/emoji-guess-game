@@ -4,6 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Emoji Guess Game</title>
+
+  <!-- Confetti Script -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
   <style>
     :root{
       --bg1:#0f1724; --bg2:#071028;
@@ -38,12 +42,16 @@
       50%{transform:rotate(6deg)}
       100%{transform:rotate(-6deg)}
     }
-
     .card{
       width:100%; max-width:450px;
       background:rgba(255,255,255,0.03);
       border-radius:14px; padding:18px;
       box-shadow:0 10px 30px rgba(0,0,0,0.6);
+    }
+
+    .scoreBox{
+      font-size:14px; margin-bottom:10px;
+      color:#b5beca;
     }
 
     .grid{
@@ -58,12 +66,34 @@
       min-height:90px;
       display:flex; flex-direction:column;
       align-items:center; justify-content:center;
-      cursor:pointer; position:relative;
-      transition:0.25s ease;
+      cursor:pointer; 
+      position:relative;
+      transition:0.25s ease, transform .4s;
       overflow:hidden;
     }
 
-    .tile:hover{transform:scale(1.03);}
+    .tile:not(.revealed):hover{transform:scale(1.05); box-shadow:0 0 15px #2dc1ff55;}
+
+    /* flip animation */
+    .flip{
+      animation:flipAnim 0.4s forwards;
+    }
+    @keyframes flipAnim{
+      0%{transform:rotateY(0deg)}
+      100%{transform:rotateY(180deg)}
+    }
+
+    /* shake for sad */
+    .shake{
+      animation:shakeAnim 0.4s;
+    }
+    @keyframes shakeAnim{
+      25%{transform:translateX(-4px)}
+      50%{transform:translateX(4px)}
+      75%{transform:translateX(-4px)}
+      100%{transform:translateX(0)}
+    }
+
     .emoji{font-size:36px; margin-bottom:8px;}
     .tag{font-size:13px; font-weight:700; padding:5px 10px; border-radius:20px;}
 
@@ -107,11 +137,9 @@
     </header>
 
     <div class="card">
-      <div style="margin-bottom:12px;color:#9aa7b2;">
-        Hello — <strong id="playerName"></strong>  
-        <div style="font-size:13px;margin-top:4px;">
-          Click any tile. 10% chance 😊, otherwise 😢.
-        </div>
+      <div class="scoreBox">
+        Hello <strong id="playerName"></strong> —  
+        <span id="score">😊: 0 / 20</span>
       </div>
 
       <div class="grid" id="grid"></div>
@@ -121,7 +149,7 @@
   <!-- modal -->
   <div class="modal" id="nameModal" style="display:none">
     <div class="dialog">
-      <h2>Naam batao 😊</h2>
+      <h2>Apna naam likho 😊</h2>
       <input id="nameInput" placeholder="Aapka naam..." />
       <button class="btn" id="saveNameBtn">Save</button>
     </div>
@@ -143,6 +171,7 @@
   const saveNameBtn = document.getElementById('saveNameBtn');
   const playerNameEl = document.getElementById('playerName');
   const greetEl = document.getElementById('greet');
+  const scoreEl = document.getElementById('score');
   const grid = document.getElementById('grid');
   const template = document.getElementById('tileTpl');
 
@@ -181,8 +210,14 @@
 
   function start(name){
     playerNameEl.innerText = name;
-    greetEl.innerText = "Namaste " + name + "! Khelo aur enjoy karo.";
+    greetEl.innerText = "Namaste " + name + "!";
+    updateScore();
     renderGrid();
+  }
+
+  function updateScore(){
+    const smiles = revealed.filter(x=>x.r==="s").length;
+    scoreEl.innerText = `😊: ${smiles} / ${TOTAL}`;
   }
 
   function renderGrid(){
@@ -208,13 +243,36 @@
 
           revealed.push({i,r:result});
           saveReveals(revealed);
+          updateScore();
 
-          emoji.textContent = smile ? "😊" : "😢";
-          tag.textContent = smile ? "haa" : "nahi";
-          tag.classList.add(smile ? "haa" : "nahi");
-          tag.style.opacity = "1";
-          tile.classList.add("revealed");
-          tile.onclick=null;
+          tile.classList.add("flip");
+
+          // Reveal emoji after flip
+          setTimeout(()=>{
+            emoji.textContent = smile ? "😊" : "😢";
+            tag.textContent = smile ? "haa" : "nahi";
+            tag.classList.add(smile ? "haa" : "nahi");
+            tag.style.opacity = "1";
+            tile.classList.add("revealed");
+          }, 200);
+
+          // Smile → confetti  
+          if(smile){
+            confetti({ particleCount: 80, spread: 60, origin: { y: .6 }});
+          }
+          else{
+            tile.classList.add("shake");
+          }
+
+          // Full reset
+          if(revealed.length === TOTAL){
+            setTimeout(()=>{
+              revealed = [];
+              saveReveals([]);
+              updateScore();
+              renderGrid();
+            }, 700);
+          }
         };
       }
 
