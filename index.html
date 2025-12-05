@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Emoji Guess Game</title>
+  <style>
+    :root{
+      --bg1:#0f1724; --bg2:#071028;
+      --card:#0b1220; --accent:#7ee787; --muted:#9aa7b2;
+      --glass: rgba(255,255,255,0.04);
+    }
+    html,body{height:100%; margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,'Noto Sans',sans-serif; background: radial-gradient(1200px 600px at 10% 10%, rgba(126,231,135,0.05), transparent), linear-gradient(180deg,var(--bg1),var(--bg2)); color:#e6f0f1;}
+    .wrap{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:28px; box-sizing:border-box; flex-direction:column;}
+    header{display:flex; gap:12px; align-items:center; margin-bottom:16px;}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#8ef3a0,#4ad5ff); display:flex;align-items:center;justify-content:center;color:#012; font-weight:700; box-shadow:0 6px 24px rgba(2,6,23,0.6), inset 0 -6px 20px rgba(255,255,255,0.06); transform:rotate(-8deg); animation:tilt 4s infinite linear;}
+    @keyframes tilt{0%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}100%{transform:rotate(-6deg)}}
+    h1{font-size:20px;margin:0;}
+    .greet{color:var(--muted); font-size:14px;}
+    .card{width:100%; max-width:980px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:14px; padding:18px; box-shadow: 0 10px 30px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.03);}
+    .toprow{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px;}
+    .subtitle{color:var(--muted); font-size:13px;}
+    .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(110px,1fr)); gap:12px;}
+    .tile{
+      background:var(--glass);
+      border-radius:10px; padding:14px; min-height:110px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+      cursor:pointer; position:relative; transform-style:preserve-3d; perspective:800px; transition:transform .25s ease;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 18px rgba(2,6,23,0.5);
+      overflow:hidden;
+    }
+    .tile:hover{transform:translateY(-6px) scale(1.01);}
+    .face{position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; backface-visibility:hidden; transition:transform .6s cubic-bezier(.2,.9,.2,1);}
+    .emoji{font-size:44px; margin-bottom:8px; filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6));}
+    .tag{font-weight:700; padding:6px 10px; border-radius:999px; font-size:13px;}
+    .tag.haa{background:linear-gradient(90deg,#dfffe1,#b6f8bd); color:#01320b}
+    .tag.nahi{background:linear-gradient(90deg,#ffd6d6,#ffbdbd); color:#390202}
+    .backdrop{position:absolute; inset:0; background: linear-gradient(120deg, rgba(255,255,255,0.02), transparent); pointer-events:none;}
+    /* revealed state */
+    .revealed{cursor:default; transform:none; pointer-events:none; opacity:1;}
+    .revealed .face{animation:pop .45s cubic-bezier(.2,.9,.2,1)}
+    @keyframes pop{0%{transform:scale(.92) translateY(8px); opacity:0}100%{transform:scale(1) translateY(0); opacity:1}}
+    /* modal */
+    .modal{position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg, rgba(0,0,0,0.5), rgba(0,0,0,0.6)); z-index:60;}
+    .dialog{background:#071428; padding:20px; border-radius:12px; width:92%; max-width:420px; border:1px solid rgba(255,255,255,0.04); box-shadow:0 20px 50px rgba(2,6,23,0.7);}
+    .dialog h2{margin:0 0 10px 0; font-size:18px}
+    .dialog input{width:100%; padding:12px;border-radius:8px; border:1px solid rgba(255,255,255,0.05); background:transparent; color:inherit; outline:none}
+    .btn{margin-top:12px; padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer; border:0; background:linear-gradient(90deg,#56e39f,#2dc1ff); color:#012;}
+    .smallhint{color:var(--muted); font-size:13px; margin-top:8px;}
+    /* header controls */
+    .controls{display:flex; gap:8px; align-items:center;}
+    .ghost{background:transparent; color:var(--muted); padding:8px 10px; border-radius:10px; border:1px dashed rgba(255,255,255,0.03); cursor:pointer;}
+    /* little confetti for smile */
+    .confetti{
+      position:absolute; inset:0; pointer-events:none;
+    }
+    .confetti span{position:absolute; font-size:12px; opacity:0; animation:cf 1000ms linear forwards;}
+    @keyframes cf{0%{transform:translateY(0) rotate(0); opacity:1}100%{transform:translateY(-120px) rotate(420deg); opacity:0}}
+    footer{margin-top:12px; color:var(--muted); font-size:13px; text-align:center;}
+    @media (max-width:480px){ .emoji{font-size:36px} .tile{min-height:92px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">EG</div>
+      <div>
+        <h1>Emoji Guess Game</h1>
+        <div class="greet" id="greet">Loading...</div>
+      </div>
+    </header>
+
+    <div class="card" id="gameCard">
+      <div class="toprow">
+        <div>
+          <div class="subtitle" id="subtitle">Hello — <strong id="playerName"></strong></div>
+          <div class="smallhint">Click any tile. 10% chance to get a 😊 (haa), otherwise 😢 (nahi).</div>
+        </div>
+        <div class="controls">
+          <button class="ghost" id="resetBtn">Reset</button>
+          <button class="ghost" id="changeNameBtn">Change Name</button>
+        </div>
+      </div>
+
+      <div class="grid" id="grid"></div>
+
+      <footer>Made with ❤️ — Click tiles and have fun!</footer>
+    </div>
+  </div>
+
+  <!-- modal -->
+  <div class="modal" id="nameModal" style="display:none">
+    <div class="dialog">
+      <h2>Nam batao 😊</h2>
+      <input id="nameInput" placeholder="Aapka naam likho..." />
+      <button class="btn" id="saveNameBtn">Save & Start</button>
+      <div class="smallhint">Naam local storage mein save rahega. Kisi bhi samay badal sakte ho.</div>
+    </div>
+  </div>
+
+  <template id="tileTpl">
+    <div class="tile" data-index="">
+      <div class="face front">
+        <div class="emoji">❔</div>
+        <div class="tag" style="opacity:0">?</div>
+      </div>
+      <div class="backdrop"></div>
+      <div class="confetti"></div>
+    </div>
+  </template>
+
+  <script>
+    // --- Config
+    const TOTAL = 20;
+    const SMILE_PROB = 0.10; // 10% smile
+    // --- State
+    const lsNameKey = 'eg_player_name';
+    const lsRevealedKey = 'eg_revealed_v1'; // will store array of objects {index, result: 'smile'|'sad'}
+    // --- DOM
+    const nameModal = document.getElementById('nameModal');
+    const nameInput = document.getElementById('nameInput');
+    const saveNameBtn = document.getElementById('saveNameBtn');
+    const playerNameEl = document.getElementById('playerName');
+    const greetEl = document.getElementById('greet');
+    const grid = document.getElementById('grid');
+    const template = document.getElementById('tileTpl');
+    const resetBtn = document.getElementById('resetBtn');
+    const changeNameBtn = document.getElementById('changeNameBtn');
+
+    // --- Helpers
+    function randChance(p){ return Math.random() < p; }
+    function loadName(){ return localStorage.getItem(lsNameKey) || ''; }
+    function saveName(n){ localStorage.setItem(lsNameKey, n); }
+    function loadRevealed(){ try{ return JSON.parse(localStorage.getItem(lsRevealedKey) || '[]'); }catch(e){ return []; } }
+    function saveRevealed(arr){ localStorage.setItem(lsRevealedKey, JSON.stringify(arr)); }
+
+    // --- UI Init
+    let revealed = loadRevealed(); // [{index:1,result:'smile'} ...]
+    function ensureNameThenStart(){
+      const nm = loadName();
+      if(!nm) {
+        nameModal.style.display = 'flex';
+        nameInput.focus();
+      } else {
+        startGame(nm);
+      }
+    }
+    saveNameBtn.addEventListener('click', ()=>{
+      const v = (nameInput.value||'').trim();
+      if(!v){ nameInput.focus(); return; }
+      saveName(v);
+      nameModal.style.display='none';
+      startGame(v);
+    });
+    changeNameBtn.addEventListener('click', ()=>{
+      nameModal.style.display='flex';
+      nameInput.value = loadName() || '';
+      nameInput.focus();
+    });
+
+    resetBtn.addEventListener('click', ()=>{
+      if(confirm('Saare tiles reset karein?')) {
+        revealed = [];
+        saveRevealed(revealed);
+        renderGrid();
+      }
+    });
+
+    function startGame(name){
+      playerNameEl.textContent = name;
+      greetEl.textContent = `Namaste, ${name}! Khelo aur dekho kaun smile laata hai.`;
+      renderGrid();
+    }
+
+    // Build grid
+    function renderGrid(){
+      grid.innerHTML = '';
+      // create array 0..TOTAL-1
+      for(let i=0;i<TOTAL;i++){
+        const tpl = template.content.cloneNode(true);
+        const tile = tpl.querySelector('.tile');
+        tile.dataset.index = i;
+        const emojiEl = tile.querySelector('.emoji');
+        const tagEl = tile.querySelector('.tag');
+        const confettiWrap = tile.querySelector('.confetti');
+
+        // check if revealed
+        const prev = revealed.find(r=>r.index===i);
+        if(prev){
+          applyReveal(tile, prev.result);
+        } else {
+          tile.addEventListener('click', onTileClick);
+        }
+
+        grid.appendChild(tpl);
+      }
+    }
+
+    function onTileClick(e){
+      const tile = e.currentTarget;
+      const idx = Number(tile.dataset.index);
+      // choose result
+      const isSmile = randChance(SMILE_PROB);
+      const result = isSmile ? 'smile' : 'sad';
+      // persist
+      revealed.push({index:idx, result});
+      saveRevealed(revealed);
+      // reveal UI
+      applyReveal(tile, result);
+      if(result==='smile') triggerConfetti(tile);
+    }
+
+    function applyReveal(tile, result){
+      tile.classList.add('revealed');
+      tile.removeEventListener('click', onTileClick);
+      const emojiEl = tile.querySelector('.emoji');
+      const tagEl = tile.querySelector('.tag');
+      if(result==='smile'){
+        emojiEl.textContent = '😊';
+        tagEl.textContent = 'haa';
+        tagEl.classList.add('haa');
+      } else {
+        emojiEl.textContent = '😢';
+        tagEl.textContent = 'nahi';
+        tagEl.classList.add('nahi');
+      }
+      tagEl.style.opacity = '1';
+      // small shine animation
+      tile.animate([{boxShadow:'0 6px 18px rgba(2,6,23,0.5)'},{boxShadow:`0 18px 40px rgba(0,0,0,0.75)`}], {duration:700, easing:'cubic-bezier(.2,.9,.2,1)'});
+    }
+
+    // confetti
+    function triggerConfetti(tile){
+      const wrap = tile.querySelector('.confetti');
+      wrap.innerHTML = '';
+      const pieces = 8;
+      for(let i=0;i<pieces;i++){
+        const s = document.createElement('span');
+        s.textContent = ['✨','🎉','💫','🌟'][i%4];
+        s.style.left = (10 + Math.random()*80) + '%';
+        s.style.top = (60 + Math.random()*20) + '%';
+        s.style.fontSize = (10 + Math.random()*12) + 'px';
+        s.style.transform = `rotate(${Math.random()*360}deg)`;
+        s.style.animationDuration = (900 + Math.random()*600)+'ms';
+        wrap.appendChild(s);
+      }
+      // remove after a while
+      setTimeout(()=>wrap.innerHTML='',$rand(1600));
+    }
+
+    // tiny helper for random timeout (no global)
+    function $rand(max){ return Math.floor(Math.random()*max); }
+
+    // On load
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const saved = loadName();
+      if(saved) nameInput.value = saved;
+      ensureNameThenStart();
+    });
+
+    // expose reset to console if needed
+    window._eg = {reset: ()=>{ localStorage.removeItem(lsRevealedKey); localStorage.removeItem(lsNameKey); location.reload(); }};
+  </script>
+</body>
+</html>
