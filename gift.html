@@ -1,169 +1,187 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Choose Your Gift</title>
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Pick a Gift For Me</title>
 <style>
-body {
-  margin: 0;
-  padding: 20px;
-  font-family: "Poppins", sans-serif;
-  background: radial-gradient(circle at 30% 20%, #1f2b48, #0e1220);
-  color: white;
-  text-align: center;
-}
+  :root{
+    --bg1:#0f1724; --bg2:#071028; --glass: rgba(255,255,255,0.04);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,'Noto Sans',sans-serif;
+    background: radial-gradient(circle at 20% 10%, #1f2b48, #0e1220 40%);
+    color:#fff; -webkit-font-smoothing:antialiased;
+    padding:28px; display:flex; align-items:center; justify-content:center; min-height:100vh;
+  }
 
-h1 {
-  margin-top: 10px;
-  font-size: 26px;
-  letter-spacing: .5px;
-}
+  .wrap{width:100%; max-width:820px; text-align:center;}
+  h1{margin:0 0 8px; font-size:26px}
+  p.lead{margin:0 0 20px; color:#c7d0db}
 
-.sub {
-  font-size: 14px;
-  opacity: 0.8;
-  margin-bottom: 25px;
-}
+  /* grid */
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(140px,1fr));
+    gap:18px;
+    align-items:center;
+  }
 
-/* Grid */
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 18px;
-  max-width: 650px;
-  margin: auto;
-}
+  /* card */
+  .card{
+    perspective:1000px;
+    cursor:pointer;
+  }
 
-/* Card Base */
-.card {
-  background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
-  border-radius: 16px;
-  padding: 30px 10px;
-  cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.45);
-  appearance: none;
-  transition: transform .35s, background .35s;
-  position: relative;
+  .card-inner{
+    position:relative;
+    width:100%;
+    padding:28px 14px;
+    min-height:120px;
+    border-radius:14px;
+    background:linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    border:1px solid rgba(255,255,255,0.06);
+    box-shadow:0 10px 30px rgba(0,0,0,0.6);
+    transform-style:preserve-3d;
+    transition: transform .7s cubic-bezier(.2,.9,.2,1), box-shadow .25s;
+  }
 
-  /* IMPORTANT FIX – content won't flip */
-  transform-style: preserve-3d;
-}
+  .card:hover .card-inner{ transform: translateY(-6px); box-shadow:0 22px 50px rgba(0,0,0,0.7); }
 
-.card:hover {
-  transform: translateY(-6px) scale(1.04);
-  background: rgba(255,255,255,0.12);
-}
+  .card.flip .card-inner{ transform: rotateY(180deg); }
 
-/* Fix backside text  */
-.card div {
-  backface-visibility: hidden;
-}
+  .card-face{ position: absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; backface-visibility:hidden; -webkit-backface-visibility:hidden; transform-style:preserve-3d; padding:18px; border-radius:14px;}
+  .card-front{ font-size:40px; }
+  .card-back{ transform: rotateY(180deg); font-size:15px; }
 
-/* Flip animation */
-.revealed {
-  animation: flip .6s ease forwards;
-}
+  .card-title{font-weight:700; margin-top:10px; font-size:14px}
+  .muted{ color: #bfcbdc; font-size:13px; margin-top:6px }
 
-@keyframes flip {
-  0% { transform: rotateY(0); }
-  100% { transform: rotateY(180deg); }
-}
+  .revealBox{
+    margin-top:28px; max-width:680px; margin-left:auto; margin-right:auto;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:12px; padding:18px; border:1px solid rgba(255,255,255,0.04); display:none;
+  }
+  .selected{ font-size:18px; margin:10px 0; font-weight:700 }
+  .allList{ margin-top:12px; display:grid; gap:8px }
+  .item{ background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:8px; text-align:left; color:#e7f0f6; font-size:14px }
 
-.revealBox {
-  margin-top: 35px;
-  padding: 20px;
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
-  background: rgba(255,255,255,0.06);
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.15);
-  display: none;
-}
-
-.giftItem {
-  margin: 8px 0;
-  padding: 10px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.08);
-  font-size: 14px;
-}
+  /* responsive tweaks */
+  @media (max-width:420px){
+    .card-inner{ padding:20px 8px; min-height:110px }
+    .card-front{ font-size:34px }
+  }
 </style>
 </head>
-
 <body>
+  <div class="wrap">
+    <h1>pick a gift for me</h1>
+    <p class="lead">Click any card — 
+    </p>
 
-<h1>Pick a Mystery Card 🎁</h1>
-<div class="sub">Click any card to reveal my surprise</div>
+    <div class="cards" id="cards">
+      <div class="card" onclick="pick(0)">
+        <div class="card-inner">
+          <div class="card-face card-front">🎴</div>
+          <div class="card-face card-back"></div>
+        </div>
+      </div>
 
-<div class="cards">
-  <div class="card" onclick="selectCard(0)"><div>❓</div></div>
-  <div class="card" onclick="selectCard(1)"><div>❓</div></div>
-  <div class="card" onclick="selectCard(2)"><div>❓</div></div>
-  <div class="card" onclick="selectCard(3)"><div>❓</div></div>
-  <div class="card" onclick="selectCard(4)"><div>❓</div></div>
-</div>
+      <div class="card" onclick="pick(1)">
+        <div class="card-inner">
+          <div class="card-face card-front">🎴</div>
+          <div class="card-face card-back"></div>
+        </div>
+      </div>
 
-<div class="revealBox" id="revealBox">
-  <h2>Your Selected Gift</h2>
-  <div id="chosenGift" style="font-size:18px; margin:12px 0;"></div>
+      <div class="card" onclick="pick(2)">
+        <div class="card-inner">
+          <div class="card-face card-front">🎴</div>
+          <div class="card-face card-back"></div>
+        </div>
+      </div>
 
-  <h3 style="margin-top:20px;">All Gifts</h3>
-  <div id="allGifts"></div>
-</div>
+      <div class="card" onclick="pick(3)">
+        <div class="card-inner">
+          <div class="card-face card-front">🎴</div>
+          <div class="card-face card-back"></div>
+        </div>
+      </div>
+
+      <div class="card" onclick="pick(4)">
+        <div class="card-inner">
+          <div class="card-face card-front">🎴</div>
+          <div class="card-face card-back"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="revealBox" id="revealBox">
+      <div class="selected" id="selectedText">She chose for you:</div>
+      <div class="allList" id="allList"></div>
+    </div>
+  </div>
 
 <script>
-const gifts = [
-  "❌ You get nothing",
-  "🚗 You must go on a casual date with me (your choice)",
-  "🎁 You owe me a surprise gift",
-  "👕 Something a boy can wear",
-  "❓ A secret gift just for me"
-];
+  // gifts phrased as "she chose for you"
+  const gifts = [
+    "❌ Nothing — it's a playful tease",
+    "🚗 I'll take you out for a casual date — you decide where",
+    "🎁 I'll give you a surprise gift — no questions asked",
+    "👕 A nice clothing item",
+    "❓ A mystery gift"
+  ];
 
-let locked = false;
+  let locked = false;
 
-function shuffleArray(arr) {
-  return arr
-    .map(value => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
-}
+  // Fisher–Yates shuffle (better)
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
 
-function selectCard(selectedIndex) {
-  if (locked) return;
-  locked = true;
+  function pick(index){
+    if(locked) return;
+    locked = true;
 
-  const cards = document.querySelectorAll(".card");
+    const cards = Array.from(document.querySelectorAll('.card'));
+    const shuffled = shuffle(gifts);
 
-  // FULL FIX – every card gets truly random gift
-  const shuffledGifts = shuffleArray(gifts);
+    // Make sure mapping is correct: chosen card -> shuffled[index]
+    // Show chosen gift text prominently
+    document.getElementById('selectedText').innerText = "She chose for you: " + shuffled[index];
 
-  // Selected card’s gift
-  document.getElementById("chosenGift").innerText = shuffledGifts[selectedIndex];
+    // Reveal each card (flip + set back content)
+    cards.forEach((card, i) => {
+      // flip after tiny delay for staggered effect
+      setTimeout(()=>{
+        card.classList.add('flip');
 
-  // Reveal animation
-  cards.forEach((card, i) => {
-    card.classList.add("revealed");
+        // find back face inside card
+        const back = card.querySelector('.card-back');
+        // set content (keeps upright because back is rotated 180deg via CSS)
+        back.innerHTML = "<div style='font-weight:700;'>" + shuffled[i] + "</div>";
 
-    setTimeout(() => {
-      card.innerHTML = `<div style='font-size:15px; padding:20px;'>${shuffledGifts[i]}</div>`;
-    }, 300);
-  });
+        // small style tweak so text fits
+        back.style.display = 'flex';
+        back.style.alignItems = 'center';
+        back.style.justifyContent = 'center';
+        back.style.padding = '6px 8px';
+      }, i * 120); // stagger reveal
+    });
 
-  // Show All gifts list
-  const list = shuffledGifts
-    .map((g, i) => `<div class='giftItem'>Card ${i + 1}: ${g}</div>`)
-    .join("");
-
-  document.getElementById("allGifts").innerHTML = list;
-
-  document.getElementById("revealBox").style.display = "block";
-}
+    // also populate the list of all gifts
+    setTimeout(()=>{
+      const html = shuffled.map((g, idx)=> `<div class="item">Card ${idx+1}: ${g}</div>`).join('');
+      document.getElementById('allList').innerHTML = html;
+      document.getElementById('revealBox').style.display = 'block';
+    }, 120 * cards.length + 150);
+  }
 </script>
-
 </body>
 </html>
