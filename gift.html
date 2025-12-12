@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Choose My Gift ❤️</title>
+
+<style>
+body{
+  margin:0; 
+  background:#0f0f1c; 
+  color:white; 
+  font-family:Arial, sans-serif; 
+  display:flex; 
+  flex-direction:column;
+  align-items:center;
+  padding:20px;
+}
+
+h1{
+  margin-top:10px;
+  font-size:26px;
+  text-align:center;
+}
+
+.hand{
+  width:260px;
+  position:relative;
+  margin-top:20px;
+}
+
+.finger{
+  position:absolute;
+  width:55px;
+  height:80px;
+  border-radius:20px;
+  background:#ffffff15;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:bold;
+  color:#fff;
+  transition:.3s;
+  border:1px solid #ffffff30;
+}
+
+.finger:hover{
+  transform:scale(1.08);
+  background:#ffffff25;
+}
+
+/* Finger positions */
+#f1{ top:0; left:100px; }
+#f2{ top:30px; left:155px; }
+#f3{ top:75px; left:175px; }
+#f4{ top:130px; left:150px; }
+#f5{ top:160px; left:100px; }
+
+/* Reveal box */
+.reveal{
+  margin-top:30px;
+  width:90%;
+  max-width:350px;
+  padding:20px;
+  background:#ffffff10;
+  border-radius:15px;
+  text-align:center;
+  display:none;
+  border:1px solid #ffffff25;
+}
+
+.giftLine{
+  padding:8px;
+  margin:6px 0;
+  background:#ffffff10;
+  border-radius:10px;
+}
+</style>
+
+</head>
+<body>
+
+<h1>Choose a Finger 🤚<br> Aur gift reveal hoga ❤️</h1>
+
+<div class="hand">
+  <div class="finger" id="f1" onclick="choose(1)">1</div>
+  <div class="finger" id="f2" onclick="choose(2)">2</div>
+  <div class="finger" id="f3" onclick="choose(3)">3</div>
+  <div class="finger" id="f4" onclick="choose(4)">4</div>
+  <div class="finger" id="f5" onclick="choose(5)">5</div>
+</div>
+
+<div class="reveal" id="revealBox">
+  <h2>🎁 Your Selected Gift</h2>
+  <div id="selectedGift" style="font-size:18px; margin-bottom:15px;"></div>
+
+  <h3>Baaki options kya the?</h3>
+  <div id="allGifts"></div>
+</div>
+
+<script>
+const gifts = [
+  "❌ Kuch nahi milega",
+  "🚗 Ghumne chalna padega mere sath (Jagh tum decide karogi ❤️)",
+  "🎁 Tum mujhe koi bhi gift dogi (bina puchhe 😌)",
+  "👕 Kuch aisa jo ek ladka pehen sake",
+  "❓ Mystery Gift"
+];
+
+let selected = false;
+
+function choose(num){
+  if(selected) return; 
+  selected = true;
+
+  // shuffle gifts
+  const shuffled = [...gifts].sort(() => Math.random() - 0.5);
+
+  const chosenGift = shuffled[num-1];
+  document.getElementById("selectedGift").innerHTML = chosenGift;
+
+  // reveal all
+  let html = "";
+  shuffled.forEach((g,i)=>{
+    html += `<div class='giftLine'>Finger ${i+1}: ${g}</div>`;
+  });
+  document.getElementById("allGifts").innerHTML = html;
+
+  document.getElementById("revealBox").style.display = "block";
+}
+</script>
+
+</body>
+</html>
