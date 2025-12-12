@@ -1,133 +1,156 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Choose My Gift ❤️</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Choose My Gift 😅</title>
 
 <style>
-body{
-  margin:0; 
-  background:#0f0f1c; 
-  color:white; 
-  font-family:Arial, sans-serif; 
-  display:flex; 
-  flex-direction:column;
-  align-items:center;
-  padding:20px;
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: "Poppins", sans-serif;
+  background: radial-gradient(circle at 30% 20%, #1f2b48, #0e1220);
+  color: white;
+  text-align: center;
 }
 
-h1{
-  margin-top:10px;
-  font-size:26px;
-  text-align:center;
+/* Title */
+h1 {
+  margin-top: 10px;
+  font-size: 26px;
+  letter-spacing: .5px;
 }
 
-.hand{
-  width:260px;
-  position:relative;
-  margin-top:20px;
+.sub {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 25px;
 }
 
-.finger{
-  position:absolute;
-  width:55px;
-  height:80px;
-  border-radius:20px;
-  background:#ffffff15;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  font-size:14px;
-  font-weight:bold;
-  color:#fff;
-  transition:.3s;
-  border:1px solid #ffffff30;
+/* Cards Container */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 18px;
+  max-width: 650px;
+  margin: auto;
 }
 
-.finger:hover{
-  transform:scale(1.08);
-  background:#ffffff25;
+/* Card Style */
+.card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+  border-radius: 16px;
+  padding: 30px 10px;
+  font-size: 32px;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+  transition: transform .35s, background .35s;
+  position: relative;
 }
 
-/* Finger positions */
-#f1{ top:0; left:100px; }
-#f2{ top:30px; left:155px; }
-#f3{ top:75px; left:175px; }
-#f4{ top:130px; left:150px; }
-#f5{ top:160px; left:100px; }
-
-/* Reveal box */
-.reveal{
-  margin-top:30px;
-  width:90%;
-  max-width:350px;
-  padding:20px;
-  background:#ffffff10;
-  border-radius:15px;
-  text-align:center;
-  display:none;
-  border:1px solid #ffffff25;
+.card:hover {
+  transform: translateY(-6px) scale(1.04);
+  background: rgba(255,255,255,0.12);
 }
 
-.giftLine{
-  padding:8px;
-  margin:6px 0;
-  background:#ffffff10;
-  border-radius:10px;
+/* Flip reveal animation */
+.revealed {
+  animation: flip .6s ease forwards;
+}
+
+@keyframes flip {
+  0% { transform: rotateY(0); }
+  100% { transform: rotateY(180deg); }
+}
+
+/* Revealed Gift Text */
+.revealBox {
+  margin-top: 35px;
+  padding: 20px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  background: rgba(255,255,255,0.06);
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.15);
+  display: none;
+}
+
+.giftItem {
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.08);
+  font-size: 14px;
 }
 </style>
-
 </head>
+
 <body>
 
-<h1>Choose a Finger 🤚<br> Aur gift reveal hoga ❤️</h1>
+<h1>Pick a Mystery Card 🎁</h1>
+<div class="sub">Click any card to reveal my gift</div>
 
-<div class="hand">
-  <div class="finger" id="f1" onclick="choose(1)">1</div>
-  <div class="finger" id="f2" onclick="choose(2)">2</div>
-  <div class="finger" id="f3" onclick="choose(3)">3</div>
-  <div class="finger" id="f4" onclick="choose(4)">4</div>
-  <div class="finger" id="f5" onclick="choose(5)">5</div>
+<!-- Gift Cards -->
+<div class="cards">
+  <div class="card" onclick="selectCard(0)">❓</div>
+  <div class="card" onclick="selectCard(1)">❓</div>
+  <div class="card" onclick="selectCard(2)">❓</div>
+  <div class="card" onclick="selectCard(3)">❓</div>
+  <div class="card" onclick="selectCard(4)">❓</div>
 </div>
 
-<div class="reveal" id="revealBox">
-  <h2>🎁 Your Selected Gift</h2>
-  <div id="selectedGift" style="font-size:18px; margin-bottom:15px;"></div>
+<!-- Reveal Box -->
+<div class="revealBox" id="revealBox">
+  <h2>Your Selected Gift</h2>
+  <div id="chosenGift" style="font-size:18px; margin:12px 0;"></div>
 
-  <h3>Baaki options kya the?</h3>
+  <h3 style="margin-top:20px;">All Gifts</h3>
   <div id="allGifts"></div>
 </div>
 
 <script>
-const gifts = [
-  "❌ Kuch nahi milega",
-  "🚗 Ghumne chalna padega mere sath (Jagh tum decide karogi ❤️)",
-  "🎁 Tum mujhe koi bhi gift dogi (bina puchhe 😌)",
-  "👕 Kuch aisa jo ek ladka pehen sake",
-  "❓ Mystery Gift"
+const giftList = [
+  "❌ You get nothing",
+  "🚗 You must go on a trip with me (you choose the place)",
+  "🎁 You will give me any gift — without asking",
+  "👕 Something that a boy can wear",
+  "❓ A mystery gift just for you"
 ];
 
-let selected = false;
+let gameLocked = false;
 
-function choose(num){
-  if(selected) return; 
-  selected = true;
+function selectCard(index) {
+  if (gameLocked) return;
+  gameLocked = true;
 
-  // shuffle gifts
-  const shuffled = [...gifts].sort(() => Math.random() - 0.5);
+  const cards = document.querySelectorAll(".card");
 
-  const chosenGift = shuffled[num-1];
-  document.getElementById("selectedGift").innerHTML = chosenGift;
+  // Shuffle gifts
+  const shuffled = [...giftList].sort(() => Math.random() - 0.5);
 
-  // reveal all
-  let html = "";
-  shuffled.forEach((g,i)=>{
-    html += `<div class='giftLine'>Finger ${i+1}: ${g}</div>`;
+  // Selected gift
+  const chosen = shuffled[index];
+  document.getElementById("chosenGift").innerText = chosen;
+
+  // Reveal all cards
+  cards.forEach((c, i) => {
+    c.classList.add("revealed");
+    setTimeout(() => {
+      c.innerHTML = shuffled[i];
+      c.style.fontSize = "15px";
+      c.style.padding = "20px";
+    }, 300);
   });
-  document.getElementById("allGifts").innerHTML = html;
 
+  // Show reveal section
+  const listHTML = shuffled
+    .map((g, i) => `<div class='giftItem'>Card ${i + 1}: ${g}</div>`)
+    .join("");
+
+  document.getElementById("allGifts").innerHTML = listHTML;
   document.getElementById("revealBox").style.display = "block";
 }
 </script>
