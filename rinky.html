@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Rinky 🎂</title>
+
+<style>
+body{
+  margin:0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(180deg,#0f1724,#071028);
+  color:white;
+  text-align:center;
+}
+
+section{ padding:30px 20px; }
+
+/* ---------- COLLAGE ---------- */
+.collage{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-auto-rows:120px;
+  gap:10px;
+  max-width:420px;
+  margin:0 auto;
+}
+.photo{
+  background:#ffffff20;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  color:#cfd8e3;
+}
+.photo.big{ grid-column:span 2; grid-row:span 2; }
+
+/* ---------- TEXT ---------- */
+h1{ margin-top:20px; font-size:26px; }
+.msg{
+  max-width:520px;
+  margin:15px auto;
+  font-size:15px;
+  line-height:1.6;
+  color:#d7e2ee;
+}
+
+/* ---------- CARDS ---------- */
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:16px;
+  max-width:650px;
+  margin:0 auto;
+}
+.card{
+  background:rgba(255,255,255,0.06);
+  border-radius:16px;
+  padding:28px 10px;
+  cursor:pointer;
+  font-size:32px;
+  border:1px solid rgba(255,255,255,0.12);
+  transition:.3s;
+}
+.card:hover{ transform:translateY(-6px); }
+.card.revealed{
+  cursor:default;
+  font-size:15px;
+  padding:22px 10px;
+}
+footer{
+  margin-top:30px;
+  font-size:13px;
+  color:#9aa7b2;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎉 TOP SECTION -->
+<section>
+  <div class="collage">
+    <div class="photo big">Photo 1</div>
+    <div class="photo">Photo 2</div>
+    <div class="photo">Photo 3</div>
+    <div class="photo">Photo 4</div>
+    <div class="photo">Photo 5</div>
+  </div>
+
+  <h1>Happy Birthday Rinky 🎂💖</h1>
+
+  <div class="msg">
+    Happy Birthday to the most beautiful soul ✨  
+    Rinky, you are not just special — you are magic.  
+    <br><br>
+    Tumhari muskurahat sab kuch theek kar deti hai,  
+    aur jab tum udaas hoti ho…  
+    tab bhi tum **rone wali pari** hi lagti ho 🧚‍♀️💙  
+    <br><br>
+    Aaj ka din sirf tumhara hai —  
+    smiles, surprises aur thoda sa magic tumhare naam 💫
+  </div>
+</section>
+
+<!-- 🎁 GIFT SECTION -->
+<section>
+  <h2>🎁 Pick One Birthday Surprise</h2>
+  <p style="color:#b8c4d1;font-size:14px;">Choose carefully… only one card can be opened 😉</p>
+
+  <div class="cards" id="cards"></div>
+
+  <footer>Once opened, your gift stays saved 💝</footer>
+</section>
+
+<script>
+const gifts = [
+  "💑 Date with me",
+  "😄 Nothing",
+  "🎁 Jo mila hai wahi gift hai",
+  "🍫 Chocolates",
+  "🍽️ Any dish you want"
+];
+
+const KEY = "rinky_bday_gift";
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+let saved = sessionStorage.getItem(KEY);
+let result = saved ? JSON.parse(saved) : null;
+let locked = !!result;
+
+const grid = document.getElementById("cards");
+
+function render(){
+  grid.innerHTML="";
+  const data = result || shuffle(gifts);
+
+  data.forEach((g,i)=>{
+    const d=document.createElement("div");
+    d.className="card"+(locked?" revealed":"");
+    d.innerHTML= locked ? g : "❓";
+    d.onclick=()=>{
+      if(locked) return;
+      result=data;
+      sessionStorage.setItem(KEY,JSON.stringify(result));
+      locked=true;
+      render();
+    };
+    grid.appendChild(d);
+  });
+}
+
+render();
+</script>
+
+</body>
+</html>
