@@ -6,45 +6,101 @@
 <title>Happy Birthday Rinky 🎂</title>
 
 <style>
-body{
+*{box-sizing:border-box}
+html,body{
   margin:0;
-  font-family: "Poppins", sans-serif;
-  background: linear-gradient(180deg,#0f1724,#071028);
+  scroll-behavior:smooth;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(180deg,#0f1724,#071028);
   color:white;
+}
+section{
+  min-height:100vh;
+  padding:40px 20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
   text-align:center;
 }
 
-section{ padding:30px 20px; }
-
 /* ---------- COLLAGE ---------- */
-.collage{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  grid-auto-rows:120px;
-  gap:10px;
-  max-width:420px;
-  margin:0 auto;
+.collage-wrap{
+  position:relative;
+  width:360px;
+  height:300px;
 }
 .photo{
-  background:#ffffff20;
-  border-radius:14px;
+  position:absolute;
+  background:#ffffff22;
+  backdrop-filter:blur(6px);
+  box-shadow:0 20px 40px rgba(0,0,0,.5);
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:14px;
-  color:#cfd8e3;
+  font-size:13px;
+  color:#d7e2ee;
+  animation:float 6s ease-in-out infinite;
 }
-.photo.big{ grid-column:span 2; grid-row:span 2; }
+.p1{width:160px;height:160px;border-radius:26px;left:0;top:40px;transform:rotate(-6deg)}
+.p2{width:120px;height:120px;border-radius:50%;right:0;top:0;animation-delay:1s}
+.p3{width:140px;height:100px;border-radius:20px;right:20px;bottom:30px;animation-delay:2s}
+.p4{width:90px;height:90px;border-radius:50%;left:120px;bottom:0;animation-delay:3s}
+.p5{width:110px;height:110px;border-radius:22px;left:180px;top:90px;animation-delay:4s}
+
+@keyframes float{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-14px)}
+  100%{transform:translateY(0)}
+}
 
 /* ---------- TEXT ---------- */
-h1{ margin-top:20px; font-size:26px; }
+h1{font-size:28px;margin:20px 0 10px}
 .msg{
   max-width:520px;
-  margin:15px auto;
-  font-size:15px;
-  line-height:1.6;
+  line-height:1.7;
   color:#d7e2ee;
 }
+
+/* ---------- CAKE ---------- */
+.cake{
+  position:relative;
+  width:180px;
+  margin-top:30px;
+}
+.layer{
+  height:45px;
+  border-radius:10px;
+  background:linear-gradient(#ffb3c6,#ff8fab);
+  margin-bottom:6px;
+}
+.candle{
+  position:absolute;
+  top:-35px;
+  left:50%;
+  transform:translateX(-50%);
+  width:14px;
+  height:35px;
+  background:#fff;
+  border-radius:4px;
+  cursor:pointer;
+}
+.flame{
+  position:absolute;
+  top:-18px;
+  left:50%;
+  transform:translateX(-50%);
+  width:12px;
+  height:18px;
+  background:radial-gradient(circle,#ffd166,#ff6b35);
+  border-radius:50%;
+  animation:flicker .15s infinite alternate;
+}
+@keyframes flicker{
+  from{transform:translateX(-50%) scale(1)}
+  to{transform:translateX(-50%) scale(.85)}
+}
+.blown .flame{display:none}
 
 /* ---------- CARDS ---------- */
 .cards{
@@ -52,23 +108,24 @@ h1{ margin-top:20px; font-size:26px; }
   grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
   gap:16px;
   max-width:650px;
-  margin:0 auto;
+  width:100%;
 }
 .card{
-  background:rgba(255,255,255,0.06);
-  border-radius:16px;
+  background:rgba(255,255,255,.06);
+  border-radius:18px;
   padding:28px 10px;
-  cursor:pointer;
   font-size:32px;
-  border:1px solid rgba(255,255,255,0.12);
+  cursor:pointer;
+  border:1px solid rgba(255,255,255,.12);
   transition:.3s;
 }
-.card:hover{ transform:translateY(-6px); }
+.card:hover{transform:translateY(-6px)}
 .card.revealed{
-  cursor:default;
   font-size:15px;
+  cursor:default;
   padding:22px 10px;
 }
+
 footer{
   margin-top:30px;
   font-size:13px;
@@ -79,35 +136,52 @@ footer{
 
 <body>
 
-<!-- 🎉 TOP SECTION -->
+<!-- 🌸 STORY 1 -->
 <section>
-  <div class="collage">
-    <div class="photo big">Photo 1</div>
-    <div class="photo">Photo 2</div>
-    <div class="photo">Photo 3</div>
-    <div class="photo">Photo 4</div>
-    <div class="photo">Photo 5</div>
+  <div class="collage-wrap">
+    <div class="photo p1">Photo 1</div>
+    <div class="photo p2">Photo 2</div>
+    <div class="photo p3">Photo 3</div>
+    <div class="photo p4">Photo 4</div>
+    <div class="photo p5">Photo 5</div>
   </div>
 
   <h1>Happy Birthday Rinky 🎂💖</h1>
 
   <div class="msg">
-    Happy Birthday to the most beautiful soul ✨  
-    Rinky, you are not just special — you are magic.  
+    To the most beautiful soul ✨  
+    Rinky, you make every moment brighter just by being you.  
     <br><br>
-    Tumhari muskurahat sab kuch theek kar deti hai,  
-    aur jab tum udaas hoti ho…  
-    tab bhi tum **rone wali pari** hi lagti ho 🧚‍♀️💙  
+    Even when you cry, you still look like a  
+    <b>rone wali pari</b> 🧚‍♀️  
     <br><br>
-    Aaj ka din sirf tumhara hai —  
-    smiles, surprises aur thoda sa magic tumhare naam 💫
+    This little page is made only for you 💙
   </div>
+
+  <p style="margin-top:30px;opacity:.7">Scroll ↓</p>
 </section>
 
-<!-- 🎁 GIFT SECTION -->
+<!-- 🎂 STORY 2 -->
 <section>
-  <h2>🎁 Pick One Birthday Surprise</h2>
-  <p style="color:#b8c4d1;font-size:14px;">Choose carefully… only one card can be opened 😉</p>
+  <h1>Make a Wish ✨</h1>
+  <p class="msg">Tap the candle to blow it…</p>
+
+  <div class="cake" id="cake">
+    <div class="candle" id="candle">
+      <div class="flame"></div>
+    </div>
+    <div class="layer"></div>
+    <div class="layer"></div>
+    <div class="layer"></div>
+  </div>
+
+  <p style="margin-top:30px;opacity:.7">Scroll ↓</p>
+</section>
+
+<!-- 🎁 STORY 3 -->
+<section>
+  <h1>Birthday Surprise 🎁</h1>
+  <p class="msg">Choose only one card… fate will decide 😉</p>
 
   <div class="cards" id="cards"></div>
 
@@ -115,18 +189,26 @@ footer{
 </section>
 
 <script>
-const gifts = [
+/* ---------- Candle ---------- */
+document.getElementById("candle").onclick=()=>{
+  document.getElementById("cake").classList.add("blown");
+};
+
+/* ---------- Gifts ---------- */
+const gifts=[
   "💑 Date with me",
   "😄 Nothing",
   "🎁 Jo mila hai wahi gift hai",
   "🍫 Chocolates",
   "🍽️ Any dish you want"
 ];
+const KEY="rinky_bday_gift";
+let saved=sessionStorage.getItem(KEY);
+let result=saved?JSON.parse(saved):null;
+let locked=!!result;
 
-const KEY = "rinky_bday_gift";
-
-function shuffle(arr){
-  const a=[...arr];
+function shuffle(a){
+  a=[...a];
   for(let i=a.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
     [a[i],a[j]]=[a[j],a[i]];
@@ -134,22 +216,17 @@ function shuffle(arr){
   return a;
 }
 
-let saved = sessionStorage.getItem(KEY);
-let result = saved ? JSON.parse(saved) : null;
-let locked = !!result;
-
-const grid = document.getElementById("cards");
+const grid=document.getElementById("cards");
 
 function render(){
   grid.innerHTML="";
-  const data = result || shuffle(gifts);
-
-  data.forEach((g,i)=>{
+  const data=result||shuffle(gifts);
+  data.forEach(g=>{
     const d=document.createElement("div");
     d.className="card"+(locked?" revealed":"");
-    d.innerHTML= locked ? g : "❓";
+    d.innerHTML=locked?g:"❓";
     d.onclick=()=>{
-      if(locked) return;
+      if(locked)return;
       result=data;
       sessionStorage.setItem(KEY,JSON.stringify(result));
       locked=true;
@@ -158,7 +235,6 @@ function render(){
     grid.appendChild(d);
   });
 }
-
 render();
 </script>
 
