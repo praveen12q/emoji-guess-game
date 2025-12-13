@@ -212,6 +212,8 @@ unlock.setHours(0,0,0,0);
 
 lockScreen.style.display="none";
 
+content.classList.remove("locked");
+
 setInterval(()=>{
   const now=new Date();
   const diff=unlock-now;
