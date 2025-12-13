@@ -9,10 +9,10 @@
 *{box-sizing:border-box}
 html,body{
   margin:0;
-  scroll-behavior:smooth;
   font-family:'Poppins',sans-serif;
   background:linear-gradient(180deg,#0f1724,#071028);
   color:white;
+  scroll-behavior:smooth;
 }
 section{
   min-height:100vh;
@@ -22,9 +22,59 @@ section{
   justify-content:center;
   align-items:center;
   text-align:center;
+  position:relative;
 }
 
-/* ---------- COLLAGE ---------- */
+/* 🔒 LOCK */
+.locked{
+  filter:blur(12px);
+  pointer-events:none;
+}
+#lockScreen{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+  text-align:center;
+}
+.timer{
+  font-size:26px;
+  font-weight:600;
+  margin-top:15px;
+}
+
+/* ❤️ HEART RAIN */
+.heart{
+  position:fixed;
+  top:-10px;
+  color:#ff6b9f;
+  animation:fall linear infinite;
+  pointer-events:none;
+  z-index:1;
+}
+@keyframes fall{
+  to{transform:translateY(110vh); opacity:0}
+}
+
+/* 🎆 CONFETTI */
+.confetti{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+}
+.confetti span{
+  position:absolute;
+  font-size:18px;
+  animation:confetti 1.2s linear forwards;
+}
+@keyframes confetti{
+  to{transform:translateY(200px) rotate(360deg); opacity:0}
+}
+
+/* 📸 COLLAGE */
 .collage-wrap{
   position:relative;
   width:360px;
@@ -39,39 +89,24 @@ section{
   align-items:center;
   justify-content:center;
   font-size:13px;
-  color:#d7e2ee;
   animation:float 6s ease-in-out infinite;
 }
-.p1{width:160px;height:160px;border-radius:26px;left:0;top:40px;transform:rotate(-6deg)}
+.p1{width:160px;height:160px;border-radius:26px;left:0;top:40px}
 .p2{width:120px;height:120px;border-radius:50%;right:0;top:0;animation-delay:1s}
 .p3{width:140px;height:100px;border-radius:20px;right:20px;bottom:30px;animation-delay:2s}
 .p4{width:90px;height:90px;border-radius:50%;left:120px;bottom:0;animation-delay:3s}
 .p5{width:110px;height:110px;border-radius:22px;left:180px;top:90px;animation-delay:4s}
 
 @keyframes float{
-  0%{transform:translateY(0)}
   50%{transform:translateY(-14px)}
-  100%{transform:translateY(0)}
 }
 
-/* ---------- TEXT ---------- */
-h1{font-size:28px;margin:20px 0 10px}
-.msg{
-  max-width:520px;
-  line-height:1.7;
-  color:#d7e2ee;
-}
-
-/* ---------- CAKE ---------- */
-.cake{
-  position:relative;
-  width:180px;
-  margin-top:30px;
-}
+/* 🎂 CAKE */
+.cake{position:relative;width:180px;margin-top:30px}
 .layer{
   height:45px;
-  border-radius:10px;
   background:linear-gradient(#ffb3c6,#ff8fab);
+  border-radius:10px;
   margin-bottom:6px;
 }
 .candle{
@@ -79,30 +114,24 @@ h1{font-size:28px;margin:20px 0 10px}
   top:-35px;
   left:50%;
   transform:translateX(-50%);
-  width:14px;
-  height:35px;
+  width:14px;height:35px;
   background:#fff;
   border-radius:4px;
   cursor:pointer;
 }
 .flame{
   position:absolute;
-  top:-18px;
-  left:50%;
+  top:-18px;left:50%;
   transform:translateX(-50%);
-  width:12px;
-  height:18px;
+  width:12px;height:18px;
   background:radial-gradient(circle,#ffd166,#ff6b35);
   border-radius:50%;
   animation:flicker .15s infinite alternate;
 }
-@keyframes flicker{
-  from{transform:translateX(-50%) scale(1)}
-  to{transform:translateX(-50%) scale(.85)}
-}
+@keyframes flicker{to{transform:translateX(-50%) scale(.85)}}
 .blown .flame{display:none}
 
-/* ---------- CARDS ---------- */
+/* 🎁 CARDS */
 .cards{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
@@ -116,27 +145,30 @@ h1{font-size:28px;margin:20px 0 10px}
   padding:28px 10px;
   font-size:32px;
   cursor:pointer;
-  border:1px solid rgba(255,255,255,.12);
-  transition:.3s;
 }
-.card:hover{transform:translateY(-6px)}
 .card.revealed{
   font-size:15px;
   cursor:default;
-  padding:22px 10px;
 }
 
-footer{
-  margin-top:30px;
-  font-size:13px;
-  color:#9aa7b2;
-}
+footer{margin-top:30px;color:#9aa7b2;font-size:13px}
 </style>
 </head>
 
 <body>
 
-<!-- 🌸 STORY 1 -->
+<!-- 🔒 LOCK SCREEN -->
+<div id="lockScreen">
+  <div>
+    <h1>🎁 Surprise Unlocking Soon</h1>
+    <p>This page will reveal on <b>15th at 12:00 AM</b></p>
+    <div class="timer" id="timer"></div>
+  </div>
+</div>
+
+<div id="content" class="locked">
+
+<!-- ❤️ STORY 1 -->
 <section>
   <div class="collage-wrap">
     <div class="photo p1">Photo 1</div>
@@ -147,54 +179,83 @@ footer{
   </div>
 
   <h1>Happy Birthday Rinky 🎂💖</h1>
-
-  <div class="msg">
-    To the most beautiful soul ✨  
-    Rinky, you make every moment brighter just by being you.  
-    <br><br>
-    Even when you cry, you still look like a  
-    <b>rone wali pari</b> 🧚‍♀️  
-    <br><br>
-    This little page is made only for you 💙
-  </div>
-
-  <p style="margin-top:30px;opacity:.7">Scroll ↓</p>
+  <p>You are my rone wali pari 🧚‍♀️</p>
 </section>
 
 <!-- 🎂 STORY 2 -->
 <section>
   <h1>Make a Wish ✨</h1>
-  <p class="msg">Tap the candle to blow it…</p>
-
   <div class="cake" id="cake">
-    <div class="candle" id="candle">
-      <div class="flame"></div>
-    </div>
+    <div class="candle" id="candle"><div class="flame"></div></div>
     <div class="layer"></div>
     <div class="layer"></div>
     <div class="layer"></div>
   </div>
-
-  <p style="margin-top:30px;opacity:.7">Scroll ↓</p>
 </section>
 
 <!-- 🎁 STORY 3 -->
 <section>
   <h1>Birthday Surprise 🎁</h1>
-  <p class="msg">Choose only one card… fate will decide 😉</p>
-
   <div class="cards" id="cards"></div>
-
-  <footer>Once opened, your gift stays saved 💝</footer>
+  <footer>Once opened, it stays 💝</footer>
 </section>
 
+</div>
+
+<div class="confetti" id="confetti"></div>
+
 <script>
-/* ---------- Candle ---------- */
-document.getElementById("candle").onclick=()=>{
-  document.getElementById("cake").classList.add("blown");
+/* ⏳ COUNTDOWN */
+const unlock=new Date();
+unlock.setDate(15);
+unlock.setHours(0,0,0,0);
+
+setInterval(()=>{
+  const now=new Date();
+  const diff=unlock-now;
+  if(diff<=0){
+    lockScreen.style.display="none";
+    content.classList.remove("locked");
+    return;
+  }
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor(diff%86400000/3600000);
+  const m=Math.floor(diff%3600000/60000);
+  const s=Math.floor(diff%60000/1000);
+  timer.innerHTML=`${d}d ${h}h ${m}m ${s}s`;
+},1000);
+
+/* ❤️ HEART RAIN */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💖";
+  h.style.left=Math.random()*100+"%";
+  h.style.animationDuration=3+Math.random()*3+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},500);
+
+/* 🎆 CONFETTI */
+function blast(){
+  for(let i=0;i<30;i++){
+    const s=document.createElement("span");
+    s.textContent=["🎉","✨","💖","🌟"][i%4];
+    s.style.left=Math.random()*100+"%";
+    s.style.top="50%";
+    confetti.appendChild(s);
+    setTimeout(()=>s.remove(),1200);
+  }
+}
+
+/* 🎂 CANDLE */
+candle.onclick=()=>{
+  cake.classList.add("blown");
+  blast();
+  setTimeout(()=>window.scrollBy({top:innerHeight,behavior:"smooth"}),700);
 };
 
-/* ---------- Gifts ---------- */
+/* 🎁 GIFTS */
 const gifts=[
   "💑 Date with me",
   "😄 Nothing",
@@ -202,40 +263,31 @@ const gifts=[
   "🍫 Chocolates",
   "🍽️ Any dish you want"
 ];
-const KEY="rinky_bday_gift";
+const KEY="rinky_gift";
 let saved=sessionStorage.getItem(KEY);
-let result=saved?JSON.parse(saved):null;
-let locked=!!result;
+let data=saved?JSON.parse(saved):shuffle(gifts);
+let lockedGift=!!saved;
 
 function shuffle(a){
-  a=[...a];
   for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
+    const j=Math.random()* (i+1)|0;
     [a[i],a[j]]=[a[j],a[i]];
   }
   return a;
 }
 
-const grid=document.getElementById("cards");
-
-function render(){
-  grid.innerHTML="";
-  const data=result||shuffle(gifts);
-  data.forEach(g=>{
-    const d=document.createElement("div");
-    d.className="card"+(locked?" revealed":"");
-    d.innerHTML=locked?g:"❓";
-    d.onclick=()=>{
-      if(locked)return;
-      result=data;
-      sessionStorage.setItem(KEY,JSON.stringify(result));
-      locked=true;
-      render();
-    };
-    grid.appendChild(d);
-  });
-}
-render();
+data.forEach(g=>{
+  const c=document.createElement("div");
+  c.className="card"+(lockedGift?" revealed":"");
+  c.innerHTML=lockedGift?g:"❓";
+  c.onclick=()=>{
+    if(lockedGift)return;
+    sessionStorage.setItem(KEY,JSON.stringify(data));
+    lockedGift=true;
+    location.reload();
+  };
+  cards.appendChild(c);
+});
 </script>
 
 </body>
