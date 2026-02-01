@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Karishma 🎂</title>
+
+<style>
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:radial-gradient(circle at top,#1b2b4a,#050b1d);
+  color:white;
+  scroll-behavior:smooth;
+  overflow-x:hidden;
+}
+section{
+  min-height:100vh;
+  padding:50px 20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  position:relative;
+}
+
+/* 🔒 LOCK */
+.locked{
+  filter:blur(14px) brightness(.6);
+  pointer-events:none;
+}
+#lockScreen{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(180deg,#000,#090015);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+  text-align:center;
+}
+#lockScreen h1{
+  font-size:34px;
+  text-shadow:0 0 20px #ff6bd6;
+}
+.timer{
+  font-size:26px;
+  margin-top:15px;
+  color:#ffb3ec;
+}
+
+/* ❤️ HEART RAIN */
+.heart{
+  position:fixed;
+  top:-10px;
+  font-size:22px;
+  animation:fall linear infinite;
+  pointer-events:none;
+  z-index:1;
+}
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(360deg); opacity:0}
+}
+
+/* 🎆 CONFETTI */
+.confetti span{
+  position:absolute;
+  font-size:20px;
+  animation:confetti 1.3s ease-out forwards;
+}
+@keyframes confetti{
+  to{transform:translateY(220px) rotate(540deg); opacity:0}
+}
+
+/* 📸 COLLAGE */
+.collage-wrap{
+  position:relative;
+  width:360px;
+  height:300px;
+}
+.photo{
+  position:absolute;
+  box-shadow:0 20px 40px rgba(255,105,180,.4);
+  animation:float 6s ease-in-out infinite;
+}
+.p1{background:url("d6b2c188-5b0a-4a93-bca6-efa8919650a12.jpeg") center/cover;width:160px;height:160px;border-radius:26px;left:0;top:40px}
+.p2{background:url("d6b2c188-5b0a-4a93-bca6-efa8919650a12.jpeg") center/cover;width:120px;height:120px;border-radius:50%;right:0;top:0;animation-delay:1s}
+.p3{background:url("d6b2c188-5b0a-4a93-bca6-efa8919650a12.jpeg") center/cover;width:140px;height:100px;border-radius:20px;right:20px;bottom:30px;animation-delay:2s}
+.p4{background:url("d6b2c188-5b0a-4a93-bca6-efa8919650a12.jpeg") center/cover;width:90px;height:90px;border-radius:50%;left:120px;bottom:0;animation-delay:3s}
+.p5{background:url("d6b2c188-5b0a-4a93-bca6-efa8919650a12.jpeg") center/cover;width:110px;height:110px;border-radius:22px;left:180px;top:90px;animation-delay:4s}
+
+@keyframes float{
+  50%{transform:translateY(-18px)}
+}
+
+/* 🎂 CAKE */
+.cake{position:relative;width:190px;margin-top:30px}
+.layer{
+  height:45px;
+  background:linear-gradient(#ffb3f0,#ff69b4);
+  border-radius:12px;
+  margin-bottom:6px;
+}
+.candle{
+  position:absolute;
+  top:-35px;
+  left:50%;
+  transform:translateX(-50%);
+  width:14px;height:35px;
+  background:#fff;
+  border-radius:4px;
+  cursor:pointer;
+}
+.flame{
+  position:absolute;
+  top:-18px;left:50%;
+  transform:translateX(-50%);
+  width:12px;height:18px;
+  background:radial-gradient(circle,#fff3b0,#ff6b35);
+  border-radius:50%;
+  animation:flicker .15s infinite alternate;
+}
+@keyframes flicker{to{transform:translateX(-50%) scale(.8)}}
+.blown .flame{display:none}
+
+/* 🎁 CARDS */
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:18px;
+  max-width:650px;
+  width:100%;
+}
+.card{
+  background:rgba(255,255,255,.08);
+  border-radius:20px;
+  padding:30px 10px;
+  font-size:32px;
+  cursor:pointer;
+  transition:.4s;
+}
+.card:hover{transform:scale(1.08)}
+.card.revealed{
+  font-size:15px;
+  cursor:default;
+}
+
+footer{margin-top:30px;color:#bfa6d9;font-size:13px}
+</style>
+</head>
+
+<body>
+
+<!-- 🔒 LOCK SCREEN -->
+<div id="lockScreen">
+  <div>
+    <h1>🎁 Surprise Unlocking Soon</h1>
+    <p>This page will reveal on <b>4 February at 12:00 AM</b></p>
+    <div class="timer" id="timer"></div>
+  </div>
+</div>
+
+<div id="content" class="locked">
+
+<!-- ❤️ STORY 1 -->
+<section>
+  <div class="collage-wrap">
+    <div class="photo p1"></div>
+    <div class="photo p2"></div>
+    <div class="photo p3"></div>
+    <div class="photo p4"></div>
+    <div class="photo p5"></div>
+  </div>
+
+  <h1 style="text-shadow:0 0 20px #ff69b4">Happy Birthday Karishma 🎂💖</h1>
+  <p>You are my param sundari ✨👑</p>
+</section>
+
+<!-- 🎂 STORY 2 -->
+<section>
+  <h1>Make a Wish ✨</h1>
+  <div class="cake" id="cake">
+    <div class="candle" id="candle"><div class="flame"></div></div>
+    <div class="layer"></div>
+    <div class="layer"></div>
+    <div class="layer"></div>
+  </div>
+</section>
+
+<!-- 🎁 STORY 3 -->
+<section>
+  <h1>Birthday Surprise 🎁</h1>
+  <div class="cards" id="cards"></div>
+  <footer>Once opened, it stays 💝</footer>
+</section>
+
+</div>
+
+<div class="confetti" id="confetti"></div>
+
+<script>
+/* ⏳ COUNTDOWN */
+const unlock=new Date(new Date().getFullYear(),1,4,0,0,0);
+
+setInterval(()=>{
+  const now=new Date();
+  const diff=unlock-now;
+  if(diff<=0){
+    lockScreen.style.display="none";
+    content.classList.remove("locked");
+    return;
+  }
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor(diff%86400000/3600000);
+  const m=Math.floor(diff%3600000/60000);
+  const s=Math.floor(diff%60000/1000);
+  timer.innerHTML=`${d}d ${h}h ${m}m ${s}s`;
+},1000);
+
+/* ❤️ HEART RAIN */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML=["💖","✨","💗","🌸"][Math.random()*4|0];
+  h.style.left=Math.random()*100+"%";
+  h.style.animationDuration=3+Math.random()*3+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},450);
+
+/* 🎆 CONFETTI */
+function blast(){
+  for(let i=0;i<35;i++){
+    const s=document.createElement("span");
+    s.textContent=["🎉","✨","💖","🌟"][i%4];
+    s.style.left=Math.random()*100+"%";
+    s.style.top="50%";
+    confetti.appendChild(s);
+    setTimeout(()=>s.remove(),1300);
+  }
+}
+
+/* 🎂 CANDLE */
+candle.onclick=()=>{
+  cake.classList.add("blown");
+  blast();
+  setTimeout(()=>window.scrollBy({top:innerHeight,behavior:"smooth"}),700);
+};
+
+/* 🎁 GIFTS */
+const gifts=[
+  "💑 Date with me",
+  "😄 Nothing",
+  "🎁 As Your Wish",
+  "🍫 Chocolates",
+  "🍽️ Any dish you want"
+];
+const KEY="karishma_gift";
+let saved=sessionStorage.getItem(KEY);
+let data=saved?JSON.parse(saved):shuffle(gifts);
+let lockedGift=!!saved;
+
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.random()*(i+1)|0;
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+data.forEach(g=>{
+  const c=document.createElement("div");
+  c.className="card"+(lockedGift?" revealed":"");
+  c.innerHTML=lockedGift?g:"❓";
+  c.onclick=()=>{
+    if(lockedGift)return;
+    sessionStorage.setItem(KEY,JSON.stringify(data));
+    location.reload();
+  };
+  cards.appendChild(c);
+});
+</script>
+
+</body>
+</html>
