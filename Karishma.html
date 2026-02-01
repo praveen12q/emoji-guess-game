@@ -28,7 +28,7 @@ section{
 
 /* 🔒 LOCK */
 .locked{
-  filter:blur(14px) brightness(.6);
+  filter:blur(14px) brightness(.4);
   pointer-events:none;
 }
 #lockScreen{
@@ -207,7 +207,7 @@ const unlock=new Date(new Date().getFullYear(),1,4,0,0,0);
 setInterval(()=>{
   const now=new Date();
   const diff=unlock-now;
-  if(diff<=0){
+  if(diff>=0){
     lockScreen.style.display="none";
     content.classList.remove("locked");
     return;
