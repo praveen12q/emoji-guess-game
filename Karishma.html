@@ -207,11 +207,11 @@ const unlock=new Date(new Date().getFullYear(),1,4,0,0,0);
 setInterval(()=>{
   const now=new Date();
   const diff=unlock-now;
-  if(diff>=0){
+  //if(diff<=0){
     lockScreen.style.display="none";
     content.classList.remove("locked");
     return;
-  }
+  //}
   const d=Math.floor(diff/86400000);
   const h=Math.floor(diff%86400000/3600000);
   const m=Math.floor(diff%3600000/60000);
