@@ -1,1 +1,86 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sorry Card for Rinky</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to right, #fbd3e9, #bb377d);
+        font-family: 'Segoe UI', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .card {
+        background: #fff;
+        padding: 30px 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        text-align: center;
+        max-width: 350px;
+        animation: fadeIn 1.5s ease;
+    }
+
+    .card h1 {
+        color: #bb377d;
+        margin-bottom: 10px;
+    }
+
+    .card p {
+        color: #555;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .heart {
+        font-size: 40px;
+        color: #ff4d6d;
+        margin: 15px 0;
+        animation: beat 1s infinite;
+    }
+
+    .btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 25px;
+        background: #bb377d;
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn:hover {
+        background: #ff4d6d;
+    }
+
+    @keyframes beat {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h1>I'm Sorry, Rinky 💔</h1>
+    <div class="heart">❤</div>
+   
+    <button class="btn" onclick="alert('Thank you Rinky ❤️')">
+        Forgive Me
+    </button>
+</div>
+
+</body>
+</html>
